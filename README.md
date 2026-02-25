@@ -17,7 +17,7 @@ The project uses:
 - `srcs/.env` (local, ignored): environment variables and credentials.
 
 ### Main design choices
-- Base image: Debian Bullseye for all services.
+- Base image: Debian Trixie for all services.
 - Runtime flow:
   - MariaDB initializes once and keeps data in a persistent volume.
   - WordPress waits for DB, then performs idempotent setup.
