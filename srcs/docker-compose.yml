@@ -38,6 +38,8 @@ services:
       - inception
     build:
       context: ./requirements/nginx
+    env_file:
+      - .env
     volumes:
       - wordpress:/var/www/wordpress
     depends_on:

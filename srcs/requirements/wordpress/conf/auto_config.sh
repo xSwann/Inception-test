@@ -3,6 +3,12 @@ set -e
 
 mkdir -p /run/php
 
+# Validate WP_ADMIN_USER doesn't contain forbidden words
+if echo "${WP_ADMIN_USER}" | grep -iq "admin\|administrator"; then
+	echo "ERROR: WP_ADMIN_USER cannot contain 'admin' or 'administrator'" >&2
+	exit 1
+fi
+
 while ! mysqladmin ping -hmariadb -u"${SQL_USER}" -p"${SQL_PASSWORD}" --silent; do
 	sleep 1
 done
