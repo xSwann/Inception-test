@@ -16,6 +16,11 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 		--path="/var/www/wordpress"
 fi
 
+wp config set DB_NAME "${SQL_DATABASE}" --allow-root --type=constant --path="/var/www/wordpress"
+wp config set DB_USER "${SQL_USER}" --allow-root --type=constant --path="/var/www/wordpress"
+wp config set DB_PASSWORD "${SQL_PASSWORD}" --allow-root --type=constant --path="/var/www/wordpress"
+wp config set DB_HOST "mariadb:3306" --allow-root --type=constant --path="/var/www/wordpress"
+
 if ! wp core is-installed --allow-root --path="/var/www/wordpress"; then
 	wp core install --allow-root \
 		--url="https://${DOMAIN_NAME}" \
@@ -33,4 +38,9 @@ if ! wp core is-installed --allow-root --path="/var/www/wordpress"; then
 		--path="/var/www/wordpress"
 fi
 
-exec php-fpm7.4 -F
+PHP_FPM_BIN="$(command -v php-fpm || ls /usr/sbin/php-fpm* 2>/dev/null | head -n 1)"
+if [ -z "$PHP_FPM_BIN" ]; then
+	echo "php-fpm binary not found" >&2
+	exit 1
+fi
+exec "$PHP_FPM_BIN" -F

@@ -28,4 +28,4 @@ if [ ! -f /var/lib/mysql/.inception_init_done ]; then
 	chown mysql:mysql /var/lib/mysql/.inception_init_done
 fi
 
-exec mysqld_safe
+exec mysqld --user=mysql --datadir=/var/lib/mysql
