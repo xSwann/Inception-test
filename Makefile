@@ -1,5 +1,9 @@
 COMPOSE = docker compose -f srcs/docker-compose.yml --env-file srcs/.env
+DATA_PATH_ENV := $(shell sed -n 's/^DATA_PATH=//p' srcs/.env 2>/dev/null | head -n 1)
 DATA_PATH ?= /home/$(USER)/data
+ifneq ($(strip $(DATA_PATH_ENV)),)
+DATA_PATH := $(DATA_PATH_ENV)
+endif
 
 all: up
 
